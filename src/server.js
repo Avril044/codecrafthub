@@ -32,6 +32,15 @@ app.get("/api/courses", async (req,res)=>{
   if(tag) courses = courses.filter(c=>c.tags.includes(tag));
   res.json(courses);
 });
+app.get("/api/courses/stats", async (req,res)=>{
+  const courses = await readCourses();
+  res.json({
+    total: courses.length,
+    planned: courses.filter(c=>c.status==="planned").length,
+    inProgress: courses.filter(c=>c.status==="in-progress").length,
+    completed: courses.filter(c=>c.status==="completed").length
+  });
+});
 app.get("/api/stats", async (req,res)=>{
   const courses = await readCourses();
   res.json({
@@ -66,6 +75,15 @@ app.post("/api/courses", async (req,res)=>{
   courses.push(newCourse);
   await saveCourses(courses);
   res.status(201).json(newCourse);
+});
+app.put("/api/courses/:id", async (req,res)=>{
+  const courses = await readCourses();
+  const index = courses.findIndex(c=>c.id===req.params.id);
+  if(index===-1) return res.status(404).json({error:"Curso no encontrado"});
+  const updated = {...courses[index], ...req.body, id: courses[index].id, updatedAt: new Date().toISOString()};
+  courses[index] = updated;
+  await saveCourses(courses);
+  res.json(updated);
 });
 app.delete("/api/courses/:id", async (req,res)=>{
   const courses = await readCourses();
