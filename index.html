@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CodeCraftHub · Panel de Administración</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#eef6ff',
+              100: '#d9eaff',
+              200: '#bcd9ff',
+              300: '#8ec1ff',
+              400: '#599dff',
+              500: '#3377ff',
+              600: '#1d56f5',
+              700: '#1542e1',
+              800: '#1836b6',
+              900: '#1a338f',
+              950: '#152055',
+            },
+          },
+          keyframes: {
+            'fade-in': { '0%': { opacity: 0 }, '100%': { opacity: 1 } },
+            'slide-up': { '0%': { opacity: 0, transform: 'translateY(12px)' }, '100%': { opacity: 1, transform: 'translateY(0)' } },
+            'scale-in': { '0%': { opacity: 0, transform: 'scale(0.96)' }, '100%': { opacity: 1, transform: 'scale(1)' } },
+          },
+          animation: {
+            'fade-in': 'fade-in 0.2s ease-out',
+            'slide-up': 'slide-up 0.3s ease-out',
+            'scale-in': 'scale-in 0.2s ease-out',
+          },
+        },
+      },
+    };
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    body { font-family: 'Inter', system-ui, sans-serif; }
+    ::-webkit-scrollbar { width: 10px; height: 10px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; border: 2px solid transparent; background-clip: content-box; }
+    ::-webkit-scrollbar-thumb:hover { background: #94a3b8; background-clip: content-box; }
+    .card-hover { transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease; }
+    .card-hover:hover { transform: translateY(-4px); box-shadow: 0 12px 32px -8px rgba(15, 23, 42, 0.18); }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-800 min-h-screen antialiased">
+
+  <!-- Header -->
+  <header class="sticky top-0 z-30 bg-white/90 backdrop-blur-md border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-500 to-brand-700 flex items-center justify-center shadow-lg shadow-brand-500/30">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+          </div>
+          <div>
+            <h1 class="text-lg font-bold tracking-tight text-slate-900 leading-none">CodeCraftHub</h1>
+            <p class="text-xs text-slate-500 mt-0.5">Panel de Administración</p>
+          </div>
+        </div>
+        <button id="btnNewCourse" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-700 active:scale-95 text-white text-sm font-semibold shadow-md shadow-brand-600/30 transition-all">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+          </svg>
+          <span class="hidden sm:inline">Nuevo Curso</span>
+          <span class="sm:hidden">Nuevo</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+    <!-- Stats -->
+    <section id="statsSection" class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+      <!-- Filled by JS -->
+    </section>
+
+    <!-- Controls -->
+    <section class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 sm:p-5 mb-6">
+      <div class="flex flex-col md:flex-row gap-3 md:items-center">
+        <div class="relative flex-1">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z" />
+          </svg>
+          <input id="searchInput" type="text" placeholder="Buscar por título..."
+            class="w-full pl-9 pr-3 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-400 transition" />
+        </div>
+        <div class="relative">
+          <select id="statusFilter"
+            class="w-full md:w-auto appearance-none pl-3 pr-9 py-2.5 rounded-xl border border-slate-200 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-400 transition cursor-pointer">
+            <option value="">Todos los estados</option>
+            <option value="planned">Planificado</option>
+            <option value="in-progress">En progreso</option>
+            <option value="completed">Completado</option>
+          </select>
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- Course Grid -->
+    <section id="coursesGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      <!-- Filled by JS -->
+    </section>
+
+    <!-- Empty state -->
+    <div id="emptyState" class="hidden text-center py-20">
+      <div class="w-16 h-16 mx-auto rounded-2xl bg-slate-100 flex items-center justify-center mb-4">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      </div>
+      <h3 class="text-base font-semibold text-slate-700">No se encontraron cursos</h3>
+      <p class="text-sm text-slate-500 mt-1">Prueba con otra búsqueda o crea un curso nuevo.</p>
+    </div>
+  </main>
+
+  <!-- Toast container -->
+  <div id="toastContainer" class="fixed top-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <!-- Modal: Course Form -->
+  <div id="modalOverlay" class="hidden fixed inset-0 z-40 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4">
+    <div id="modalCard" class="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto animate-scale-in">
+      <div class="flex items-center justify-between px-6 py-4 border-b border-slate-100 sticky top-0 bg-white rounded-t-2xl z-10">
+        <h2 id="modalTitle" class="text-lg font-bold text-slate-900">Nuevo Curso</h2>
+        <button id="modalClose" class="w-9 h-9 rounded-lg flex items-center justify-center text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition" aria-label="Cerrar">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      <form id="courseForm" class="px-6 py-5 space-y-4">
+        <input type="hidden" id="courseId" />
+        <div>
+          <label for="fTitle" class="block text-sm font-medium text-slate-700 mb-1.5">Título <span class="text-rose-500">*</span></label>
+          <input id="fTitle" name="title" type="text" required placeholder="Ej. Curso de React desde cero"
+            class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-400 transition" />
+        </div>
+        <div>
+          <label for="fDescription" class="block text-sm font-medium text-slate-700 mb-1.5">Descripción</label>
+          <textarea id="fDescription" name="description" rows="3" placeholder="Breve resumen del curso..."
+            class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-400 transition resize-none"></textarea>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label for="fPlatform" class="block text-sm font-medium text-slate-700 mb-1.5">Plataforma</label>
+            <input id="fPlatform" name="platform" type="text" placeholder="Ej. Udemy, Coursera"
+              class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-400 transition" />
+          </div>
+          <div>
+            <label for="fLevel" class="block text-sm font-medium text-slate-700 mb-1.5">Nivel</label>
+            <div class="relative">
+              <select id="fLevel" name="level"
+                class="w-full appearance-none px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-400 transition cursor-pointer">
+                <option value="beginner">Principiante</option>
+                <option value="intermediate">Intermedio</option>
+                <option value="advanced">Avanzado</option>
+              </select>
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+              </svg>
+            </div>
+          </div>
+        </div>
+        <div>
+          <label for="fUrl" class="block text-sm font-medium text-slate-700 mb-1.5">URL del curso</label>
+          <input id="fUrl" name="url" type="url" placeholder="https://..."
+            class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-400 transition" />
+        </div>
+        <div>
+          <label for="fTags" class="block text-sm font-medium text-slate-700 mb-1.5">Etiquetas <span class="text-slate-400 font-normal">(separadas por comas)</span></label>
+          <input id="fTags" name="tags" type="text" placeholder="react, javascript, frontend"
+            class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-400 transition" />
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label for="fStatus" class="block text-sm font-medium text-slate-700 mb-1.5">Estado</label>
+            <div class="relative">
+              <select id="fStatus" name="status"
+                class="w-full appearance-none px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-400 transition cursor-pointer">
+                <option value="planned">Planificado</option>
+                <option value="in-progress">En progreso</option>
+                <option value="completed">Completado</option>
+              </select>
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+              </svg>
+            </div>
+          </div>
+          <div>
+            <label for="fProgress" class="block text-sm font-medium text-slate-700 mb-1.5">Progreso: <span id="progressValue" class="text-brand-600 font-semibold">0%</span></label>
+            <input id="fProgress" name="progress" type="range" min="0" max="100" step="1" value="0"
+              class="w-full h-2 mt-3 rounded-full bg-slate-200 appearance-none cursor-pointer accent-brand-600" />
+          </div>
+        </div>
+        <div class="flex items-center justify-end gap-3 pt-2">
+          <button type="button" id="modalCancel" class="px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-100 transition">Cancelar</button>
+          <button type="submit" id="modalSubmit" class="px-5 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-700 active:scale-95 text-white text-sm font-semibold shadow-md shadow-brand-600/30 transition-all">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Delete confirmation -->
+  <div id="deleteOverlay" class="hidden fixed inset-0 z-40 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-sm animate-scale-in">
+      <div class="p-6 text-center">
+        <div class="w-14 h-14 mx-auto rounded-full bg-rose-100 flex items-center justify-center mb-4">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-rose-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+          </svg>
+        </div>
+        <h3 class="text-base font-bold text-slate-900">Eliminar curso</h3>
+        <p class="text-sm text-slate-500 mt-2">¿Seguro que quieres eliminar <span id="deleteName" class="font-semibold text-slate-700"></span>? Esta acción no se puede deshacer.</p>
+      </div>
+      <div class="flex gap-3 px-6 pb-6">
+        <button id="deleteCancel" class="flex-1 px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-100 transition">Cancelar</button>
+        <button id="deleteConfirm" class="flex-1 px-4 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 active:scale-95 text-white text-sm font-semibold shadow-md shadow-rose-600/30 transition-all">Eliminar</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API_BASE = 'http://localhost:3000';
+
+    // ---------- State ----------
+    let allCourses = [];
+    let stats = { total: 0, planned: 0, 'in-progress': 0, completed: 0 };
+    let deleteTarget = null;
+
+    // ---------- DOM refs ----------
+    const $ = (id) => document.getElementById(id);
+    const statsSection = $('statsSection');
+    const coursesGrid = $('coursesGrid');
+    const emptyState = $('emptyState');
+    const searchInput = $('searchInput');
+    const statusFilter = $('statusFilter');
+    const modalOverlay = $('modalOverlay');
+    const deleteOverlay = $('deleteOverlay');
+    const courseForm = $('courseForm');
+
+    // ---------- Helpers ----------
+    const statusMeta = {
+      planned:      { label: 'Planificado',   badge: 'bg-amber-100 text-amber-700',     dot: 'bg-amber-500' },
+      'in-progress':{ label: 'En progreso',    badge: 'bg-sky-100 text-sky-700',         dot: 'bg-sky-500' },
+      completed:    { label: 'Completado',     badge: 'bg-emerald-100 text-emerald-700', dot: 'bg-emerald-500' },
+    };
+    const levelMeta = {
+      beginner:     { label: 'Principiante', badge: 'bg-slate-100 text-slate-600' },
+      intermediate:  { label: 'Intermedio',  badge: 'bg-slate-200 text-slate-700' },
+      advanced:     { label: 'Avanzado',    badge: 'bg-slate-800 text-white' },
+    };
+
+    function toast(message, type = 'success') {
+      const container = $('toastContainer');
+      const colors = {
+        success: { bg: 'bg-emerald-600', icon: 'M5 13l4 4L19 7' },
+        error:   { bg: 'bg-rose-600',     icon: 'M6 18L18 6M6 6l12 12' },
+      };
+      const c = colors[type] || colors.success;
+      const el = document.createElement('div');
+      el.className = `pointer-events-auto flex items-center gap-2.5 ${c.bg} text-white text-sm font-medium px-4 py-3 rounded-xl shadow-lg animate-slide-up`;
+      el.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="${c.icon}"/></svg><span>${message}</span>`;
+      container.appendChild(el);
+      setTimeout(() => {
+        el.style.transition = 'opacity 0.3s, transform 0.3s';
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(-8px)';
+        setTimeout(() => el.remove(), 300);
+      }, 3000);
+    }
+
+    function escapeHtml(str) {
+      if (str == null) return '';
+      return String(str).replace(/[&<>"']/g, (m) => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m]));
+    }
+
+    // ---------- Stats ----------
+    function statCard(meta, value) {
+      return `
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 card-hover">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-xs font-medium text-slate-500 uppercase tracking-wide">${meta.label}</p>
+              <p class="text-3xl font-extrabold text-slate-900 mt-1 tabular-nums">${value}</p>
+            </div>
+            <div class="w-11 h-11 rounded-xl ${meta.bg} flex items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 ${meta.color}" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="${meta.icon}" />
+              </svg>
+            </div>
+          </div>
+        </div>`;
+    }
+
+    function renderStats() {
+      const cards = [
+        { label: 'Total',       value: stats.total,        bg: 'bg-brand-100',  color: 'text-brand-700',  icon: 'M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253' },
+        { label: 'Planificados', value: stats.planned,     bg: 'bg-amber-100',  color: 'text-amber-700',  icon: 'M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z' },
+        { label: 'En progreso',  value: stats['in-progress'], bg: 'bg-sky-100', color: 'text-sky-700',   icon: 'M13 10V3L4 14h7v7l9-11h-7z' },
+        { label: 'Completados',  value: stats.completed,    bg: 'bg-emerald-100', color: 'text-emerald-700', icon: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z' },
+      ];
+      statsSection.innerHTML = cards.map((c) => statCard(c, c.value)).join('');
+    }
+
+    // ---------- Courses ----------
+    function parseTags(course) {
+      if (Array.isArray(course.tags)) return course.tags;
+      if (typeof course.tags === 'string') return course.tags.split(',').map((t) => t.trim()).filter(Boolean);
+      return [];
+    }
+
+    function courseCard(course) {
+      const s = statusMeta[course.status] || statusMeta.planned;
+      const lvl = levelMeta[course.level] || levelMeta.beginner;
+      const tags = parseTags(course);
+      const progress = Math.max(0, Math.min(100, Number(course.progress) || 0));
+      const progressColor = course.status === 'completed' ? 'bg-emerald-500' : course.status === 'in-progress' ? 'bg-sky-500' : 'bg-amber-400';
+
+      return `
+        <article class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col card-hover">
+          <div class="p-5 flex-1">
+            <div class="flex items-center justify-between mb-3">
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold ${s.badge}">
+                <span class="w-1.5 h-1.5 rounded-full ${s.dot}"></span>${s.label}
+              </span>
+              <span class="px-2.5 py-1 rounded-full text-xs font-medium ${lvl.badge}">${lvl.label}</span>
+            </div>
+            <h3 class="text-base font-bold text-slate-900 leading-snug">${escapeHtml(course.title)}</h3>
+            ${course.description ? `<p class="text-sm text-slate-500 mt-1.5 line-clamp-2">${escapeHtml(course.description)}</p>` : ''}
+            ${course.platform ? `<p class="text-xs text-slate-400 mt-2 flex items-center gap-1"><svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17v-2a4 4 0 014-4h4M7 7h.01M7 7h.01M7 7h.01M7 7h.01M7 7h.01M7 7h.01M7 7h.01M7 7h.01M7 7h.01"/></svg>${escapeHtml(course.platform)}</p>` : ''}
+            <div class="mt-4">
+              <div class="flex items-center justify-between text-xs text-slate-500 mb-1.5">
+                <span>Progreso</span>
+                <span class="font-semibold text-slate-700 tabular-nums">${progress}%</span>
+              </div>
+              <div class="h-2 rounded-full bg-slate-100 overflow-hidden">
+                <div class="h-full ${progressColor} rounded-full transition-all duration-500" style="width:${progress}%"></div>
+              </div>
+            </div>
+            ${tags.length ? `<div class="flex flex-wrap gap-1.5 mt-4">${tags.map((t) => `<span class="px-2 py-0.5 rounded-md text-xs font-medium bg-slate-100 text-slate-600">${escapeHtml(t)}</span>`).join('')}</div>` : ''}
+          </div>
+          <div class="px-5 py-3 border-t border-slate-100 bg-slate-50/60 flex items-center justify-between">
+            ${course.url ? `<a href="${escapeHtml(course.url)}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-xs font-medium text-brand-600 hover:text-brand-700 transition"><svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>Abrir</a>` : '<span></span>'}
+            <div class="flex items-center gap-1">
+              <button data-edit="${escapeHtml(course.id)}" class="w-8 h-8 rounded-lg flex items-center justify-center text-slate-500 hover:text-brand-600 hover:bg-brand-50 transition" title="Editar">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+              </button>
+              <button data-delete="${escapeHtml(course.id)}" class="w-8 h-8 rounded-lg flex items-center justify-center text-slate-500 hover:text-rose-600 hover:bg-rose-50 transition" title="Eliminar">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+              </button>
+            </div>
+          </div>
+        </article>`;
+    }
+
+    function getFiltered() {
+      const q = searchInput.value.trim().toLowerCase();
+      const f = statusFilter.value;
+      return allCourses.filter((c) => {
+        const matchTitle = !q || (c.title || '').toLowerCase().includes(q);
+        const matchStatus = !f || c.status === f;
+        return matchTitle && matchStatus;
+      });
+    }
+
+    function renderCourses() {
+      const filtered = getFiltered();
+      if (filtered.length === 0) {
+        coursesGrid.innerHTML = '';
+        emptyState.classList.remove('hidden');
+      } else {
+        emptyState.classList.add('hidden');
+        coursesGrid.innerHTML = filtered.map(courseCard).join('');
+      }
+    }
+
+    // ---------- API ----------
+    async function api(path, options = {}) {
+      const res = await fetch(`${API_BASE}${path}`, {
+        headers: { 'Content-Type': 'application/json' },
+        ...options,
+      });
+      if (!res.ok) {
+        let msg = `Error ${res.status}`;
+        try { const data = await res.json(); msg = data.message || data.error || msg; } catch {}
+        throw new Error(msg);
+      }
+      if (res.status === 204) return null;
+      return res.json();
+    }
+
+    async function loadStats() {
+      try {
+        const data = await api('/api/courses/stats');
+        stats = {
+          total: data.total ?? 0,
+          planned: data.planned ?? 0,
+          'in-progress': data['in-progress'] ?? data.inProgress ?? 0,
+          completed: data.completed ?? 0,
+        };
+        renderStats();
+      } catch (e) {
+        toast('No se pudieron cargar las estadísticas', 'error');
+      }
+    }
+
+    async function loadCourses() {
+      try {
+        const data = await api('/api/courses');
+        allCourses = Array.isArray(data) ? data : (data.courses || []);
+        renderCourses();
+      } catch (e) {
+        toast('No se pudieron cargar los cursos', 'error');
+        allCourses = [];
+        renderCourses();
+      }
+    }
+
+    async function loadAll() {
+      await Promise.all([loadStats(), loadCourses()]);
+    }
+
+    // ---------- Modal ----------
+    function openModal(course = null) {
+      courseForm.reset();
+      $('courseId').value = '';
+      $('progressValue').textContent = '0%';
+      if (course) {
+        $('modalTitle').textContent = 'Editar Curso';
+        $('courseId').value = course.id;
+        $('fTitle').value = course.title || '';
+        $('fDescription').value = course.description || '';
+        $('fPlatform').value = course.platform || '';
+        $('fUrl').value = course.url || '';
+        $('fLevel').value = course.level || 'beginner';
+        $('fStatus').value = course.status || 'planned';
+        const p = Math.max(0, Math.min(100, Number(course.progress) || 0));
+        $('fProgress').value = p;
+        $('progressValue').textContent = p + '%';
+        const tags = parseTags(course);
+        $('fTags').value = tags.join(', ');
+      } else {
+        $('modalTitle').textContent = 'Nuevo Curso';
+        $('fLevel').value = 'beginner';
+        $('fStatus').value = 'planned';
+        $('fProgress').value = 0;
+      }
+      modalOverlay.classList.remove('hidden');
+      setTimeout(() => $('fTitle').focus(), 50);
+    }
+
+    function closeModal() {
+      modalOverlay.classList.add('hidden');
+    }
+
+    $('btnNewCourse').addEventListener('click', () => openModal());
+    $('modalClose').addEventListener('click', closeModal);
+    $('modalCancel').addEventListener('click', closeModal);
+    modalOverlay.addEventListener('click', (e) => { if (e.target === modalOverlay) closeModal(); });
+
+    $('fProgress').addEventListener('input', (e) => {
+      $('progressValue').textContent = e.target.value + '%';
+    });
+
+    courseForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const id = $('courseId').value;
+      const tagsRaw = $('fTags').value.trim();
+      const payload = {
+        title: $('fTitle').value.trim(),
+        description: $('fDescription').value.trim(),
+        platform: $('fPlatform').value.trim(),
+        url: $('fUrl').value.trim(),
+        level: $('fLevel').value,
+        tags: tagsRaw ? tagsRaw.split(',').map((t) => t.trim()).filter(Boolean) : [],
+        status: $('fStatus').value,
+        progress: Number($('fProgress').value),
+      };
+      if (!payload.title) { toast('El título es obligatorio', 'error'); return; }
+
+      const submitBtn = $('modalSubmit');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Guardando...';
+      try {
+        if (id) {
+          await api(`/api/courses/${id}`, { method: 'PUT', body: JSON.stringify(payload) });
+          toast('Curso actualizado correctamente');
+        } else {
+          await api('/api/courses', { method: 'POST', body: JSON.stringify(payload) });
+          toast('Curso creado correctamente');
+        }
+        closeModal();
+        await loadAll();
+      } catch (err) {
+        toast(err.message || 'Error al guardar el curso', 'error');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Guardar';
+      }
+    });
+
+    // ---------- Delete ----------
+    function openDelete(course) {
+      deleteTarget = course;
+      $('deleteName').textContent = `"${course.title}"`;
+      deleteOverlay.classList.remove('hidden');
+    }
+    function closeDelete() {
+      deleteOverlay.classList.add('hidden');
+      deleteTarget = null;
+    }
+    $('deleteCancel').addEventListener('click', closeDelete);
+    deleteOverlay.addEventListener('click', (e) => { if (e.target === deleteOverlay) closeDelete(); });
+    $('deleteConfirm').addEventListener('click', async () => {
+      if (!deleteTarget) return;
+      const id = deleteTarget.id;
+      const btn = $('deleteConfirm');
+      btn.disabled = true;
+      btn.textContent = 'Eliminando...';
+      try {
+        await api(`/api/courses/${id}`, { method: 'DELETE' });
+        toast('Curso eliminado correctamente');
+        closeDelete();
+        await loadAll();
+      } catch (err) {
+        toast(err.message || 'Error al eliminar el curso', 'error');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Eliminar';
+      }
+    });
+
+    // ---------- Event delegation for grid buttons ----------
+    coursesGrid.addEventListener('click', (e) => {
+      const editBtn = e.target.closest('[data-edit]');
+      const delBtn = e.target.closest('[data-delete]');
+      if (editBtn) {
+        const id = editBtn.getAttribute('data-edit');
+        const course = allCourses.find((c) => String(c.id) === String(id));
+        if (course) openModal(course);
+      } else if (delBtn) {
+        const id = delBtn.getAttribute('data-delete');
+        const course = allCourses.find((c) => String(c.id) === String(id));
+        if (course) openDelete(course);
+      }
+    });
+
+    // ---------- Controls ----------
+    searchInput.addEventListener('input', renderCourses);
+    statusFilter.addEventListener('change', renderCourses);
+
+    // ---------- Keyboard ----------
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        if (!modalOverlay.classList.contains('hidden')) closeModal();
+        if (!deleteOverlay.classList.contains('hidden')) closeDelete();
+      }
+    });
+
+    // ---------- Init ----------
+    loadAll();
+  </script>
+</body>
+</html>
